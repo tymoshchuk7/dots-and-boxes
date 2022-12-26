@@ -1,0 +1,38 @@
+version: "3"
+
+services: 
+
+  db:
+    image: postgres:13.1-alpine
+    environment: 
+      POSTGRES_USER: alex
+      POSTGRES_DB: sticks
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+  server:
+    depends_on: 
+      - db
+    environment:
+      DB_NAME: sticks
+      DB_USERNAME: alex
+      DB_PASSWORD: 1234
+      DB_HOST: db
+      DB_PORT: 5432
+      SECRET: secret
+    build: ./
+    command: npm start
+    ports:
+      - 7000:7000
+
+  client:
+    depends_on: 
+      - server
+    build: frontend/
+    command: npm start
+    ports:
+      - 5000:5000
+
+volumes:
+  pgdata:

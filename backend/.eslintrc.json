@@ -1,0 +1,22 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "airbnb-typescript"
+    ],
+    "rules": {
+        "global-require": "off"
+    },
+    "ignorePatterns": ["node_modules/", "tests/"],
+    "parserOptions": {
+        "project": "tsconfig.json",
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "jest"
+    ]
+}

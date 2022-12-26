@@ -1,0 +1,58 @@
+image: node:14
+
+stages:
+  - build
+  - lint
+  - test
+
+cache:
+  paths:
+    - node_modules/
+    - frontend/node_modules/
+
+services:
+  - postgres:13.1-alpine
+
+variables:
+  POSTGRES_USER: alex
+  POSTGRES_PASSWORD: 1234
+  DB_USERNAME: alex
+  DB_PASSWORD: 1234
+  DB_HOST: postgres
+  DB_PORT: 5432
+
+build:
+  stage: build
+  script:
+    - npm install
+    - cd frontend/ && npm install 
+  only:
+    - merge_requests
+
+lint-server:
+  stage: lint
+  script:
+    - npm run lint
+  only:
+    - merge_requests
+
+lint-client:
+  stage: lint
+  script: 
+    - cd frontend/ && npm run lint
+  only:
+    - merge_requests
+
+test-server: 
+  stage: test
+  script:
+    - CI=true npm test
+  only:
+    - merge_requests
+
+test-client: 
+  stage: test
+  script:
+    - cd frontend/ && SKIP_PREFLIGHT_CHECK=true npm run test
+  only:
+    - merge_requests

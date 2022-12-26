@@ -1,0 +1,9 @@
+FROM node:latest
+
+WORKDIR /sticks/server
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
